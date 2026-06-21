@@ -222,6 +222,8 @@ if search_clicked:
             **Registration Number:** {best_match['regno']}
 
             **Research Topic:** {best_match['Title']}
+            
+             **Cohort:** {best_match['Cohort']}            
 
             **Similarity Score:** {highest:.2f}%
             """
@@ -235,7 +237,7 @@ if search_clicked:
             "🧠 Recommendation"
         )
 
-        if highest >= 90:
+        if highest >= 80:
 
             st.error(
                 """
@@ -245,7 +247,7 @@ if search_clicked:
                 """
             )
 
-        elif highest >= 70:
+        elif highest >= 6afn0:
 
             st.warning(
                 """
@@ -278,6 +280,7 @@ if search_clicked:
                 "regno",
                 "name",
                 "Title",
+                "Cohort",
                 "Similarity_%",
                 "Category"
             ]
@@ -333,6 +336,7 @@ with st.expander(
             [
                 "regno",
                 "name",
+                "Cohort",
                 "Title"
             ]
         ],
