@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
 
 from utils import (
     load_model,
@@ -44,8 +43,8 @@ st.write(
 
 try:
 
-    df = pd.read_excel(
-        "research_topics.xlsx"
+    df = pd.read_csv(
+        "topics.csv"
     )
 
 except Exception as e:
@@ -207,18 +206,6 @@ if st.button(
         # CHART
         # --------------------------
 
-        fig = px.bar(
-            results,
-            x="Similarity_%",
-            y="Title",
-            orientation="h",
-            title="Top Similar Topics"
-        )
-
-        st.plotly_chart(
-            fig,
-            use_container_width=True
-        )
 
         # --------------------------
         # DOWNLOAD
