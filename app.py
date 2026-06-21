@@ -299,7 +299,7 @@ if search_clicked:
         # CHART
         # ==========================================
 
-       
+       #to add
 
         # ==========================================
         # DOWNLOAD BUTTON
@@ -348,7 +348,9 @@ st.markdown("---")
 
 st.caption(
     """
-    Research Topic Similarity Checker v1.0
+    Research Topic Similarity Checker v1.
+    
+    Developed by Moses Njue @2026
 
     Powered by Streamlit, Sentence Transformers and Scikit-Learn
     """
