@@ -247,7 +247,7 @@ if search_clicked:
                 """
             )
 
-        elif highest >= 6afn0:
+        elif highest >= 60:
 
             st.warning(
                 """
