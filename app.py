@@ -243,7 +243,7 @@ if search_clicked:
                 """
                 HIGH RISK:
                 This topic is extremely similar to an
-                existing project and may require major revision.
+                existing project. Student should change the topic.
                 """
             )
 
@@ -254,7 +254,7 @@ if search_clicked:
                 MODERATE RISK:
                 Significant overlap exists.
                 Review objectives, methodology,
-                study area, and datasets.
+                study area, and datasets or modify the title.
                 """
             )
 
