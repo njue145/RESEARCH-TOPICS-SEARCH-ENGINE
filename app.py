@@ -44,7 +44,7 @@ st.write(
 try:
 
     df = pd.read_csv(
-        "topics.csv"
+        "topics.csv", encoding='cp1252'
     )
 
 except Exception as e:
