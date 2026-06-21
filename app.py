@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
 
 from utils import (
     load_model,
@@ -300,34 +299,7 @@ if search_clicked:
         # CHART
         # ==========================================
 
-        st.subheader(
-            "📊 Similarity Distribution"
-        )
-
-        chart_df = results.head(10).copy()
-
-        fig = px.bar(
-            chart_df,
-            x="Similarity_%",
-            y="Title",
-            orientation="h",
-            text="Similarity_%",
-            height=500
-        )
-
-        fig.update_layout(
-            yaxis={
-                "categoryorder":
-                "total ascending"
-            },
-            xaxis_title="Similarity (%)",
-            yaxis_title=""
-        )
-
-        st.plotly_chart(
-            fig,
-            use_container_width=True
-        )
+       
 
         # ==========================================
         # DOWNLOAD BUTTON
