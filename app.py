@@ -117,38 +117,25 @@ with st.sidebar:
 # ==================================================
 # MODEL
 # ==================================================
-
 @st.cache_resource
 def get_model():
-
     return load_model()
 
-model = get_model()
-
 # ==================================================
-# EMBEDDINGS
+# PRECOMPUTED EMBEDDINGS
 # ==================================================
 
 @st.cache_data
 def get_embeddings():
-
-    cached = load_embeddings()
-
-    if cached is not None:
-        return cached
-
-    embeddings = generate_embeddings(
-        df,
-        model
-    )
-
-    save_embeddings(
-        embeddings
-    )
-
-    return embeddings
+    return load_embeddings()
 
 embeddings = get_embeddings()
+
+if embeddings is None:
+    st.error(
+        "embedding_cache.pkl was not found."
+    )
+    st.stop()
 
 # ==================================================
 # SEARCH AREA
