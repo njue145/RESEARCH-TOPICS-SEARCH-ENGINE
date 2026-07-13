@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 from pathlib import Path
-from sentence_transformers import SentenceTransformer
+# from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 
 
@@ -38,7 +38,7 @@ def load_model():
     """
     Load transformer model.
     """
-
+    from sentence_transformers import SentenceTransformer
     return SentenceTransformer(MODEL_NAME)
 
 
