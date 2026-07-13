@@ -176,7 +176,9 @@ if search_clicked:
         )
 
     else:
-
+     
+        model = get_model()
+        
         with st.spinner(
             "Analyzing similarity..."
         ):
