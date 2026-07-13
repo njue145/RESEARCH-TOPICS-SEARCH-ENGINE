@@ -1,97 +1,63 @@
 import re
 import pickle
-import pandas as pd
-import numpy as np
-
 from pathlib import Path
-# from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
 
+import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
 
 MODEL_NAME = "all-MiniLM-L6-v2"
 CACHE_FILE = "embedding_cache.pkl"
 
 
 def clean_text(text):
-    """
-    Clean research title.
-    """
-
     text = str(text).lower()
-
-    text = re.sub(
-        r'[^a-zA-Z0-9\s]',
-        '',
-        text
-    )
-
-    text = re.sub(
-        r'\s+',
-        ' ',
-        text
-    )
-
+    text = re.sub(r"[^a-zA-Z0-9\s]", "", text)
+    text = re.sub(r"\s+", " ", text)
     return text.strip()
 
 
 def load_model():
     """
-    Load transformer model.
+    Load Sentence Transformer model.
     """
     from sentence_transformers import SentenceTransformer
-    return SentenceTransformer(MODEL_NAME)
+
+    return SentenceTransformer(
+        MODEL_NAME,
+        device="cpu"
+    )
 
 
-def generate_embeddings(
-    df,
-    model
-):
+def generate_embeddings(df, model):
     """
-    Generate embeddings.
+    Used ONLY when creating embedding_cache.pkl locally.
     """
 
-    titles = df["Title"].apply(
-        clean_text
-    ).tolist()
+    titles = df["Title"].apply(clean_text).tolist()
 
     embeddings = model.encode(
         titles,
         convert_to_numpy=True,
-        show_progress_bar=False
+        show_progress_bar=False,
+        batch_size=32,
     )
 
     return embeddings
 
 
-def save_embeddings(
-    embeddings
-):
+def save_embeddings(embeddings):
 
-    with open(
-        CACHE_FILE,
-        "wb"
-    ) as f:
-
-        pickle.dump(
-            embeddings,
-            f
-        )
+    with open(CACHE_FILE, "wb") as f:
+        pickle.dump(embeddings, f)
 
 
 def load_embeddings():
 
-    if Path(
-        CACHE_FILE
-    ).exists():
+    if not Path(CACHE_FILE).exists():
+        return None
 
-        with open(
-            CACHE_FILE,
-            "rb"
-        ) as f:
-
-            return pickle.load(f)
-
-    return None
+    with open(CACHE_FILE, "rb") as f:
+        return pickle.load(f)
 
 
 def classify_similarity(score):
@@ -110,8 +76,7 @@ def classify_similarity(score):
     elif percentage >= 50:
         return "Low Similarity"
 
-    else:
-        return "Distinct"
+    return "Distinct"
 
 
 def search_topic(
@@ -126,7 +91,8 @@ def search_topic(
 
     query_embedding = model.encode(
         [query],
-        convert_to_numpy=True
+        convert_to_numpy=True,
+        show_progress_bar=False,
     )
 
     similarities = cosine_similarity(
@@ -137,19 +103,10 @@ def search_topic(
     results = df.copy()
 
     results["Similarity"] = similarities
+    results["Similarity_%"] = (similarities * 100).round(2)
+    results["Category"] = results["Similarity"].apply(classify_similarity)
 
-    results["Similarity_%"] = (
-        similarities * 100
-    ).round(2)
-
-    results["Category"] = (
-        results["Similarity"]
-        .apply(classify_similarity)
-    )
-
-    results = results.sort_values(
+    return results.sort_values(
         by="Similarity",
         ascending=False
-    )
-
-    return results.head(top_n)
+    ).head(top_n)
